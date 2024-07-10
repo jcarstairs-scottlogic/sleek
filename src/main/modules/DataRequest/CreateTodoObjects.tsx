@@ -35,12 +35,12 @@ function createTodoObject(lineNumber: number, string: string, attributeType?: st
   const makeDateProperty: (date: Dayjs) => TodoObjectDateProperty =
     (date) => ({ isoString: date.format('YYYY-MM-DD'), friendlyDateGroup: friendlyDateGroup(date) })
 
-  const speakingDates: DateAttributes = extractSpeakingDates(body);
-  const due = makeDateProperty(dayjs(speakingDates['due:']?.date));
-  const dueString = speakingDates['due:']?.string || null;
-  const notify = speakingDates['due:']?.notify || false;
-  const t = makeDateProperty(dayjs(speakingDates['t:']?.date));
-  const tString = speakingDates['t:']?.string || null;
+  const speakingDates = extractSpeakingDates(body);
+  const due = makeDateProperty(dayjs(speakingDates.due?.date));
+  const dueString = speakingDates.due?.string || null;
+  const notify = speakingDates.due?.notify || false;
+  const t = makeDateProperty(dayjs(speakingDates.t?.date));
+  const tString = speakingDates.t?.string || null;
   const hidden = extensions.some(extension => extension.key === 'h' && extension.value === '1');
   const pm: string | number | null = extensions.find(extension => extension.key === 'pm')?.value || null;
   const rec = extensions.find(extension => extension.key === 'rec')?.value || null;
