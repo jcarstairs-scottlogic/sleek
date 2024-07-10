@@ -23,7 +23,7 @@ function formatGroupElement({ groupElement, settings, t, todotxtAttribute }: For
       && dayjs(groupElement).isValid()
       && settings.useHumanFriendlyDates
   ) {
-    return friendlyDate(groupElement, todotxtAttribute, settings, t).pop();
+    return friendlyDate(groupElement, todotxtAttribute, t).pop();
   }
 
   // No transformation required: display as-is

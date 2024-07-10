@@ -5,6 +5,7 @@ import calendar from 'dayjs/plugin/calendar';
 import weekday from 'dayjs/plugin/weekday';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import { i18n } from './Settings/LanguageSelector';
+import { config } from 'main/config';
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
 dayjs.extend(calendar);
@@ -63,9 +64,9 @@ export const translatedAttributes = (t: typeof i18n.t) => {
   }
 };
 
-export const friendlyDateTranslationKeys = (value: string, attributeKey: string, settings: Settings) => {
-  dayjs.updateLocale(settings.language, {
-    weekStart: settings.weekStart,
+export const friendlyDateTranslationKeys = (value: string, attributeKey: string) => {
+  dayjs.updateLocale(config.get('language'), {
+    weekStart: config.get('weekStart'),
   });
 
   const today = dayjs();
@@ -115,7 +116,7 @@ export const friendlyDateTranslationKeys = (value: string, attributeKey: string,
   return results;
 };
 
-export const friendlyDate = (value: string, attributeKey: string, settings: Settings, t: typeof i18n.t) => {
-  const translationKeys = friendlyDateTranslationKeys(value, attributeKey, settings);
+export const friendlyDate = (value: string, attributeKey: string, t: typeof i18n.t) => {
+  const translationKeys = friendlyDateTranslationKeys(value, attributeKey);
   return translationKeys.map((key) => t(key));
 };
