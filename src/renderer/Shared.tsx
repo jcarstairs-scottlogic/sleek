@@ -63,7 +63,7 @@ export const translatedAttributes = (t: typeof i18n.t) => {
   }
 };
 
-export const friendlyDate = (value: string, attributeKey: string, settings: Settings, t: typeof i18n.t) => {
+export const friendlyDateTranslationKeys = (value: string, attributeKey: string, settings: Settings) => {
   dayjs.updateLocale(settings.language, {
     weekStart: settings.weekStart,
   });
@@ -73,39 +73,39 @@ export const friendlyDate = (value: string, attributeKey: string, settings: Sett
   const results = [];
 
   if (date.isBefore(today, 'day')) {
-    results.push((attributeKey === 'due') ? t('drawer.attributes.overdue') : t('drawer.attributes.elapsed'));
+    results.push((attributeKey === 'due') ? 'drawer.attributes.overdue' : 'drawer.attributes.elapsed');
   }  
 
   if (date.isAfter(today.subtract(1, 'week').startOf('week').subtract(1, 'day')) && date.isBefore(today.subtract(1, 'week').endOf('week'))) {
-    results.push(t('drawer.attributes.lastWeek'));
+    results.push('drawer.attributes.lastWeek');
   }
 
   if (date.isBefore(today.endOf('month')) && date.isAfter(today.subtract(1, 'day'), 'day')) {
-    results.push(t('drawer.attributes.thisMonth'));
+    results.push('drawer.attributes.thisMonth');
   }
 
   if (date.isSame(today, 'week')) {
-    results.push(t('drawer.attributes.thisWeek'));
+    results.push('drawer.attributes.thisWeek');
   }  
 
   if (date.isSame(today.subtract(1, 'day'), 'day')) {
-    results.push(t('drawer.attributes.yesterday'));
+    results.push('drawer.attributes.yesterday');
   }
 
   if (date.isSame(today, 'day')) {
-    results.push(t('drawer.attributes.today'));
+    results.push('drawer.attributes.today');
   }
 
   if (date.isSame(today.add(1, 'day'), 'day')) {
-    results.push(t('drawer.attributes.tomorrow'));
+    results.push('drawer.attributes.tomorrow');
   }
 
   if (date.isSame(today.add(1, 'week'), 'week')) {
-    results.push(t('drawer.attributes.nextWeek'));
+    results.push('drawer.attributes.nextWeek');
   }
 
   if (date.month() === today.add(1, 'month').month()) {
-    results.push(t('drawer.attributes.nextMonth'));
+    results.push('drawer.attributes.nextMonth');
   }
 
   if (date.isAfter(today.add(1, 'month').endOf('month'))) {
@@ -113,4 +113,9 @@ export const friendlyDate = (value: string, attributeKey: string, settings: Sett
   }
 
   return results;
+};
+
+export const friendlyDate = (value: string, attributeKey: string, settings: Settings, t: typeof i18n.t) => {
+  const translationKeys = friendlyDateTranslationKeys(value, attributeKey, settings);
+  return translationKeys.map((key) => t(key));
 };
