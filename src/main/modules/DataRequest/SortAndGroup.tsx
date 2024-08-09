@@ -1,6 +1,6 @@
 import { config } from '../../config';
 
-function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]): TodoGroup {
+function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]): TodoGroup[] {
   const fileSorting: boolean = config.get('fileSorting');
   const showHidden: boolean = config.get('showHidden');
 
@@ -32,9 +32,14 @@ function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]):
   }
 
   function groupTodoObjectsByKey(todoObjects: TodoObject[], attributeKey: string) {
-    const grouped: TodoGroup = {};
+    const grouped: { [key: string]: TodoGroup } = {};
     for (const todoObject of todoObjects) {
-      const groupKey = todoObject[attributeKey] || null;
+      const group = todoObject[attributeKey];
+      const groupKey = (
+        group === null || group === undefined ? null
+          : 'friendlyDateGroup' in group ? (group as TodoObjectDateProperty).friendlyDateGroup
+            : 'toString' in group ? (group.toString as () => string)()
+              : null) ?? '';
       if (!grouped[groupKey]) {
         grouped[groupKey] = {
           title: groupKey,
@@ -42,7 +47,7 @@ function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]):
           visible: false
         };
       }
-      
+
       grouped[groupKey].todoObjects.push(todoObject);
       grouped[groupKey].visible = grouped[groupKey].todoObjects.some(todoObject => {
         return !todoObject.hidden || (showHidden && todoObject.hidden);
@@ -59,7 +64,7 @@ function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]):
 
   if (fileSorting) {
     return [{
-      title: null,
+      title: '',
       todoObjects: todoObjects,
       visible: true
     }]

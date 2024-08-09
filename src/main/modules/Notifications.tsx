@@ -43,7 +43,7 @@ function isNotificationSuppressed(searchFilters: SearchFilter[], body: string) {
   return suppressNotification;
 }
 
-function handleNotification(due: string | null, body: string, badge: Badge) {  
+function handleNotification(due: string | null, body: string, badge: Badge) {
   if(config.get('notificationsAllowed')) {
     const today = dayjs().startOf('day');
     const dueDate = dayjs(due, 'YYYY-MM-DD');
@@ -52,7 +52,7 @@ function handleNotification(due: string | null, body: string, badge: Badge) {
     const searchFilters: SearchFilter[] = filter.get('search') || [];
 
     if(isNotificationSuppressed(searchFilters, body)) return;
-        
+
     if(dueDate.isToday() || dueDate.isBetween(today, today.add(notificationThreshold, 'day'))) {
       badge.count += 1;
       const title = createSpeakingDifference(dueDate);
