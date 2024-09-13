@@ -1,5 +1,5 @@
 import Sugar from 'sugar';
-import dayjs from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 import { config } from '../config';
 
 function mustNotify(date: Date): boolean {
@@ -91,4 +91,55 @@ function extractSpeakingDates(body: string): SpeakingDates {
   return speakingDates;
 }
 
-export { extractSpeakingDates, replaceSpeakingDatesWithAbsoluteDates };
+function getFriendlyDateGroup(dateTime: Dayjs): FriendlyDateGroup | null {
+  if (!dayjs.isDayjs(dateTime) || !dateTime.isValid()) {
+    return null;
+  }
+
+  const today = dayjs().startOf('day');
+  const date = dateTime.startOf('day');
+
+  if (date.isBefore(today.subtract(1, 'week'))) {
+    return 'before-last-week';
+  }
+
+  if (date.isBefore(today.subtract(1, 'day'))) {
+    return 'last-week';
+  }
+
+  if (date.isBefore(today)) {
+    return 'yesterday';
+  }
+
+  if (date.isSame(today)) {
+    return 'today';
+  }
+
+  if (date.isSame(today.add(1, 'day'))) {
+    return 'tomorrow';
+  }
+
+  if (today.add(1, 'week').isAfter(date)) {
+    return 'this-week';
+  }
+
+  if (today.add(2, 'week').isAfter(date)) {
+    return 'next-week';
+  }
+
+  if (today.add(1, 'month').isAfter(date)) {
+    return 'this-month';
+  }
+
+  if (today.add(2, 'month').isAfter(date)) {
+    return 'next-month';
+  }
+
+  return 'after-next-month';
+}
+
+export {
+  extractSpeakingDates,
+  getFriendlyDateGroup,
+  replaceSpeakingDatesWithAbsoluteDates
+};
