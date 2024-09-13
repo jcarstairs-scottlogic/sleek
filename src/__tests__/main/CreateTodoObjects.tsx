@@ -36,9 +36,15 @@ describe('Create todo objects', () => {
       priority: "B",
       contexts: ['context', 'anotherContext'],
       projects: ['project'],
-      due: '2023-12-31',
+      due: {
+        "friendlyDateGroup": "yesterday",
+        "isoString": '2023-12-31',
+      },
       dueString: '2023-12-31',
-      t: '2024-03-24',
+      t: {
+        "friendlyDateGroup": "after-next-month",
+        "isoString": '2024-03-24',
+      },
       tString: '2024-03-24',
       rec: '+2w',
       hidden: true,
@@ -50,12 +56,18 @@ describe('Create todo objects', () => {
 
   test('should create a finished todo object', async () => {
     const todoObjects = await createTodoObjects(fileContent);
-    expect(todoObjects[1]).toEqual({
+    expect(todoObjects[1]).toEqual<TodoObject>({
       lineNumber: 1,
       body: 'Test todo 2',
-      created: '2023-07-21',
+      created: {
+        "friendlyDateGroup": 'before-last-week',
+        "isoString": '2023-07-21',
+      },
       complete: true,
-      completed: '2023-07-23',
+      completed: {
+        "friendlyDateGroup": 'before-last-week',
+        "isoString": '2023-07-23',
+      },
       priority: null,
       contexts: null,
       projects: null,
@@ -82,7 +94,10 @@ describe('Create todo objects', () => {
       priority: null,
       contexts: null,
       projects: null,
-      due: '2024-12-31',
+      due: {
+        "friendlyDateGroup": 'after-next-month',
+        "isoString": '2024-12-31',
+      },
       dueString: 'end of the year',
       t: null,
       tString: null,
@@ -107,7 +122,10 @@ describe('Create todo objects', () => {
       projects: null,
       due: null,
       dueString: null,
-      t: '2025-01-01',
+      t: {
+        "friendlyDateGroup": "after-next-month",
+        "isoString": '2025-01-01',
+      },
       tString: 'first day of next year',
       rec: null,
       hidden: false,

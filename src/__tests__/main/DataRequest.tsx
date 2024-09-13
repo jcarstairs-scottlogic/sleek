@@ -130,15 +130,15 @@ describe('Process todo.txt objects', () => {
 
     test('Function creates 3 top level groups (A, B, C)', () => {
         const sortedAndGroupedTodoObjects = sortAndGroupTodoObjects(todoObjects, sorting);
-        const groups = Object.keys(sortedAndGroupedTodoObjects);
-        expect(groups).toEqual(['A', 'B', 'C']);
+        const groupTitles = sortedAndGroupedTodoObjects.map(group => group.title);
+        expect(groupTitles).toEqual(['A', 'B', 'C']);
     });
 
     test('Top level group sorted asc', () => {
         sorting[0].invert = true;
         const sortedAndGroupedTodoObjects = sortAndGroupTodoObjects(todoObjects, sorting);
-        const groups = Object.keys(sortedAndGroupedTodoObjects);
-        expect(groups).toEqual(['C', 'B', 'A']);
+        const groupTitles = sortedAndGroupedTodoObjects.map(group => group.title);
+        expect(groupTitles).toEqual(['C', 'B', 'A']);
     });
 
     // test('Sorting: Priority -> Due dates ', () => {
