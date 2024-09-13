@@ -63,54 +63,50 @@ export const translatedAttributes = (t: typeof i18n.t) => {
   }
 };
 
-export const friendlyDate = (value: string, attributeKey: string, settings: Settings, t: typeof i18n.t) => {
+export const friendlyDate = (group: FriendlyDateGroup | null, attributeKey: string, settings: Settings, t: typeof i18n.t) => {
   dayjs.updateLocale(settings.language, {
     weekStart: settings.weekStart,
   });
 
-  const today = dayjs();
-  const date = dayjs(value);
-  const results = [];
-
-  if (date.isBefore(today, 'day')) {
-    results.push((attributeKey === 'due') ? t('drawer.attributes.overdue') : t('drawer.attributes.elapsed'));
-  }  
-
-  if (date.isAfter(today.subtract(1, 'week').startOf('week').subtract(1, 'day')) && date.isBefore(today.subtract(1, 'week').endOf('week'))) {
-    results.push(t('drawer.attributes.lastWeek'));
+  switch (group) {
+    case 'before-last-week':
+      return [
+        attributeKey === 'due'
+          ? t('drawer.attributes.overdue')
+          : t('drawer.attributes.elapsed'),
+        t('drawer.attributes.beforeLastWeek'),
+      ];
+    case 'last-week':
+      return [
+        attributeKey === 'due'
+          ? t('drawer.attributes.overdue')
+          : t('drawer.attributes.elapsed'),
+        t('drawer.attributes.lastWeek'),
+      ];
+    case 'yesterday':
+      return [
+        attributeKey === 'due'
+          ? t('drawer.attributes.overdue')
+          : t('drawer.attributes.elapsed'),
+        t('drawer.attributes.yesterday'),
+      ];
+    case 'today':
+      return [t('drawer.attributes.today')];
+    case 'tomorrow':
+      return [t('drawer.attributes.tomorrow')];
+    case 'this-week':
+      return [t('drawer.attributes.thisWeek')];
+    case 'next-week':
+      return [t('drawer.attributes.nextWeek')];
+    case 'this-month':
+      return [t('drawer.attributes.thisMonth')];
+    case 'next-month':
+      return [t('drawer.attributes.nextMonth')];
+    case 'after-next-month':
+      return [t('drawer.attributes.afterNextMonth')];
+    default:
+      return [];
   }
-
-  if (date.isBefore(today.endOf('month')) && date.isAfter(today.subtract(1, 'day'), 'day')) {
-    results.push(t('drawer.attributes.thisMonth'));
-  }
-
-  if (date.isSame(today, 'week')) {
-    results.push(t('drawer.attributes.thisWeek'));
-  }  
-
-  if (date.isSame(today.subtract(1, 'day'), 'day')) {
-    results.push(t('drawer.attributes.yesterday'));
-  }
-
-  if (date.isSame(today, 'day')) {
-    results.push(t('drawer.attributes.today'));
-  }
-
-  if (date.isSame(today.add(1, 'day'), 'day')) {
-    results.push(t('drawer.attributes.tomorrow'));
-  }
-
-  if (date.isSame(today.add(1, 'week'), 'week')) {
-    results.push(t('drawer.attributes.nextWeek'));
-  }
-
-  if (date.month() === today.add(1, 'month').month()) {
-    results.push(t('drawer.attributes.nextMonth'));
-  }
-
-  if (date.isAfter(today.add(1, 'month').endOf('month'))) {
-    results.push(dayjs(date).format('YYYY-MM-DD'));
-  }
-
-  return results;
 };
+
+export const getDateAttributeKeys = () => (['due', 't', 'created', 'completed']);
