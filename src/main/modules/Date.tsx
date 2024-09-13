@@ -9,7 +9,7 @@ function mustNotify(date: Date): boolean {
 }
 
 function replaceSpeakingDatesWithAbsoluteDates(string: string): string {
-  const speakingDates: DateAttributes = extractSpeakingDates(string);
+  const speakingDates = extractSpeakingDates(string);
   const due: DateAttribute = speakingDates['due:'];
   const t: DateAttribute = speakingDates['t:'];
   if(due.date) {
@@ -50,15 +50,20 @@ function processDateWithSugar(string: string, type: string): DateAttribute | nul
   return lastMatch;
 }
 
-function extractSpeakingDates(body: string): DateAttributes {
-  const expressions = [
+type SpeakingDates = {
+  'due:': DateAttributes['due'];
+  't:': DateAttributes['t'];
+};
+
+function extractSpeakingDates(body: string): SpeakingDates {
+  const expressions: { pattern: RegExp, key: 'due:'|'t:', type: string }[] = [
     { pattern: /due:(?!(\d{4}-\d{2}-\d{2}))(.*?)(?=t:|$)/g, key: 'due:', type: 'relative' },
     { pattern: /due:(\d{4}-\d{2}-\d{2})/g, key: 'due:', type: 'absolute' },
     { pattern: /t:(?!(\d{4}-\d{2}-\d{2}))(.*?)(?=due:|$)/g, key: 't:', type: 'relative' },
     { pattern: /t:(\d{4}-\d{2}-\d{2})/g, key: 't:', type: 'absolute' },
   ];
 
-  const speakingDates: DateAttributes = {
+  const speakingDates: SpeakingDates = {
     'due:': {
       date: null,
       string: null,

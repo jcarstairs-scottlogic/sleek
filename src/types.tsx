@@ -18,7 +18,7 @@ declare global {
       };
     };
   }
-  
+
   interface ContextMenu {
     event: MouseEvent;
     items: ContextMenuItem[];
@@ -39,13 +39,13 @@ declare global {
   }
 
   interface PromptItem {
-    id: string,
-    headline?: string,
-    text?: string,
-    button1?: string,
-    onButton1?: Function,
-    button2?: string,
-    onButton2?: Function,
+    id: string;
+    headline?: string;
+    text?: string;
+    button1?: string;
+    onButton1?: Function;
+    button2?: string;
+    onButton2?: Function;
   }
 
   interface Settings {
@@ -87,7 +87,7 @@ declare global {
     fileWatcherAtomic: boolean;
     fileWatcherPolling: boolean;
     fileWatcherPollingInterval: boolean;
-    __internal__: { migrations: { version: string }};
+    __internal__: { migrations: { version: string } };
   }
 
   interface FileObject {
@@ -123,7 +123,6 @@ declare global {
   interface TodoGroup {
     title: string;
     todoObjects: TodoObject[];
-    row: number;
     visible: boolean;
   }
 
@@ -205,17 +204,17 @@ declare global {
   };
 
   interface RequestedData {
-    todoData: TodoData,
-    attributes: Attributes,
-    headers: HeadersObject,
-    filters: Filters,
+    todoData: TodoData;
+    attributes: Attributes;
+    headers: HeadersObject;
+    filters: Filters;
   }
 
   interface SearchFilter {
-    title?: string,
-    label?: string,
-    inputValue?: string,
-    suppress?: boolean,
+    title?: string;
+    label?: string;
+    inputValue?: string;
+    suppress?: boolean;
   }
 
   type VisibleSetting = {

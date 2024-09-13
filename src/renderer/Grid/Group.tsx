@@ -5,8 +5,8 @@ import Divider from '@mui/material/Divider';
 import dayjs from 'dayjs';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import { friendlyDate } from 'renderer/Shared';
-import { i18n } from 'renderer/Settings/LanguageSelector';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import type { i18n } from 'renderer/Settings/LanguageSelector';
+import { type WithTranslation, withTranslation } from 'react-i18next';
 dayjs.extend(updateLocale);
 
 interface FormatGroupElementProps {

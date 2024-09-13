@@ -1,4 +1,4 @@
-let attributes: Attributes = {
+const attributes: Attributes = {
   priority: {},
   projects: {},
   contexts: {},
@@ -31,15 +31,15 @@ function updateAttributes(todoObjects: TodoObject[], sorting: Sorting[], reset: 
     todoObjects.forEach((todoObject: TodoObject) => {
       const value = todoObject[key as keyof TodoObject];
       const notify: boolean = (key === 'due') ? !!todoObject?.notify : false;
-      
+
       if(Array.isArray(value)) {
-        value.forEach((element) => {
+        for (const element of value) {
           if(element !== null) {
             const attributeKey = element as keyof Attribute;
-            
+
             incrementCount(attributes[key], attributeKey, notify);
           }
-        });
+        }
       } else {
         if(value !== null) {
           incrementCount(attributes[key], value, notify);

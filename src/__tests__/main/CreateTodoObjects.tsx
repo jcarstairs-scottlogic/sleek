@@ -27,7 +27,7 @@ describe('Create todo objects', () => {
   
   test('should create a todo object', async () => {
     const todoObjects = await createTodoObjects(fileContent);
-    expect(todoObjects[0]).toEqual({
+    expect(todoObjects[0]).toEqual<TodoObject>({
       lineNumber: 0,
       body: 'Test +project @context todo 1 due:2023-12-31 t:2024-03-24 h:1 test @anotherContext pm:4 and a strict rec:+2w',
       created: null,
@@ -73,7 +73,7 @@ describe('Create todo objects', () => {
 
   test('should create a todo object with speaking due date', async () => {
     const todoObjects = await createTodoObjects(fileContent);
-    expect(todoObjects[2]).toEqual({
+    expect(todoObjects[2]).toEqual<TodoObject>({
       lineNumber: 2,
       body: 'Test todo 3 due:end of the year',
       created: null,
@@ -96,7 +96,7 @@ describe('Create todo objects', () => {
 
   test('should create a todo object with speaking t date', async () => {
     const todoObjects = await createTodoObjects(fileContent);
-    expect(todoObjects[3]).toEqual({
+    expect(todoObjects[3]).toEqual<TodoObject>({
       lineNumber: 3,
       body: 'Test todo 4 t:first day of next year',
       created: null,

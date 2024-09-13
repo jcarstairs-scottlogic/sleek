@@ -1,6 +1,6 @@
 import { config } from '../../config';
 
-function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]): TodoGroup {
+function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]): TodoGroup[] {
   const fileSorting: boolean = config.get('fileSorting');
   const showHidden: boolean = config.get('showHidden');
 
@@ -59,7 +59,7 @@ function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]):
 
   if (fileSorting) {
     return [{
-      title: null,
+      title: '',
       todoObjects: todoObjects,
       visible: true
     }]

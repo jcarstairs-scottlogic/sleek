@@ -10,7 +10,7 @@ export const badge: Badge = { count: 0 };
 
 function createTodoObject(lineNumber: number, string: string, attributeType?: string, attributeValue?: string): TodoObject {
   let content = string.replaceAll(/[\x10\r\n]/g, ' [LB] ');
-  
+
   let JsTodoTxtObject = new Item(content);
 
   const extensions = JsTodoTxtObject.extensions();
