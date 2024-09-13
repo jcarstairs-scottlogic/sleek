@@ -44,11 +44,11 @@ function handleTodoObjectsDates(todoObjects: TodoObject[]): TodoObject[] {
 
   return todoObjects.filter((todoObject: TodoObject) => {
 
-    const thresholdDate = dayjs(todoObject?.t);
-    const dueDate = dayjs(todoObject?.due);
+    const thresholdDate = dayjs(todoObject?.t?.isoString);
+    const dueDate = dayjs(todoObject?.due?.isoString);
 
-    return !(thresholdDate && thresholdDate.isAfter(dayjs()) && !thresholdDateInTheFuture) &&
-           !(dueDate && dueDate.isAfter(dayjs()) && !dueDateInTheFuture);
+    return !(thresholdDate.isValid() && thresholdDate.isAfter(dayjs()) && !thresholdDateInTheFuture) &&
+           !(dueDate.isValid() && dueDate.isAfter(dayjs()) && !dueDateInTheFuture);
   });
 }
 

@@ -99,18 +99,23 @@ declare global {
     doneFileBookmark: string | null;
   }
 
+  interface TodoObjectDateProperty {
+    isoString: string;
+    friendlyDateGroup: FriendlyDateGroup | null;
+  }
+
   interface TodoObject {
     lineNumber: number;
     body: string | null;
-    created: string | null;
+    created: TodoObjectDateProperty | null;
     complete: boolean;
-    completed: string | null;
+    completed: TodoObjectDateProperty | null;
     priority: string | null;
     contexts: string[] | null;
     projects: string[] | null;
-    due: string | null;
+    due: TodoObjectDateProperty | null;
     dueString: string | null;
-    t: string | null;
+    t: TodoObjectDateProperty | null;
     tString: string | null;
     rec: string | null;
     hidden: boolean;

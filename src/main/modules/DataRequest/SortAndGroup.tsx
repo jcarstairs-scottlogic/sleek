@@ -1,4 +1,7 @@
+import dayjs from 'dayjs';
 import { config } from '../../config';
+import { getDateAttributes } from '../Attributes';
+import { getFriendlyDateGroup } from '../Date';
 
 function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]): TodoGroup[] {
   const fileSorting: boolean = config.get('fileSorting');
@@ -21,9 +24,20 @@ function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]):
     return 0;
   }
 
+  function compareDates(a: TodoObjectDateProperty | null, b: TodoObjectDateProperty | null, invert: boolean): number {
+    const dateA = a?.isoString ?? null;
+    const dateB = b?.isoString ?? null;
+    return compareValues(dateA, dateB, invert);
+  }
+
   function applySorting(a: TodoObject, b: TodoObject, sorting: Sorting[]): number {
     for (const { value, invert } of sorting) {
-      const compareResult = compareValues(a[value], b[value], invert);
+      const isDateAttribute = Object.keys(getDateAttributes()).includes(value);
+
+      const compareResult = isDateAttribute
+        ? compareDates(a[value], b[value], invert)
+        : compareValues(a[value], b[value], invert);
+
       if (compareResult !== 0) {
         return compareResult;
       }
@@ -31,18 +45,32 @@ function sortAndGroupTodoObjects(todoObjects: TodoObject[], sorting: Sorting[]):
     return 0;
   }
 
+  function getGroupKey(todoObject: TodoObject, attributeKey: string) {
+    const useFriendlyDates = config.get('useHumanFriendlyDates');
+    const isDateAttribute = Object.keys(getDateAttributes()).includes(attributeKey);
+    const dateValue = dayjs(todoObject[attributeKey]?.isoString || null);
+    const hasValidDateValue = dateValue.isValid();
+
+    if (useFriendlyDates && isDateAttribute && hasValidDateValue) {
+      return getFriendlyDateGroup(dateValue);
+    }
+
+    return todoObject[attributeKey];
+  }
+
   function groupTodoObjectsByKey(todoObjects: TodoObject[], attributeKey: string) {
-    const grouped: TodoGroup = {};
+    const grouped: { [key: string]: TodoGroup } = {};
     for (const todoObject of todoObjects) {
-      const groupKey = todoObject[attributeKey] || null;
+      const group = todoObject[attributeKey];
+      const groupKey = getGroupKey(todoObject, attributeKey);
       if (!grouped[groupKey]) {
         grouped[groupKey] = {
-          title: groupKey,
+          title: todoObject[attributeKey],
           todoObjects: [],
           visible: false
         };
       }
-      
+
       grouped[groupKey].todoObjects.push(todoObject);
       grouped[groupKey].visible = grouped[groupKey].todoObjects.some(todoObject => {
         return !todoObject.hidden || (showHidden && todoObject.hidden);

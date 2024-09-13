@@ -30,14 +30,33 @@ function incrementCount(countObject: any, key: any | null, notify: boolean): voi
 }
 
 function updateAttributes(todoObjects: TodoObject[], sorting: Sorting[], reset: boolean) {
-  
-  Object.keys(attributes).forEach((key) => {
-    
-    Object.keys(attributes[key]).forEach((attributeKey) => {
-      (reset) ? attributes[key] = {} : attributes[key][attributeKey].count = 0
-    });
 
-    todoObjects.forEach((todoObject: TodoObject) => {
+  const attributeKeys = Object.keys(attributes) as AttributeKey[];
+
+  for (const key of attributeKeys) {
+
+    for (const attributeKey in attributes[key]) {
+      if (reset) {
+        if (Object.keys(getDateAttributes()).includes(key)) {
+          attributes[key as DateAttributeKey] = {
+            date: null,
+            string: null,
+            type: null,
+            notify: false,
+          };
+        } else {
+          attributes[key as NonDateAttributeKey] = {};
+        }
+      } else {
+        const attribute = attributes[key];
+        const attributeValue = attribute[attributeKey as keyof typeof attribute];
+        if (attributeValue !== null && typeof attributeValue === 'object') {
+          attributeValue.count = 0;
+        }
+      }
+    };
+
+    for (const todoObject of todoObjects) {
       const value = todoObject[key as keyof TodoObject];
       const notify: boolean = (key === 'due') ? !!todoObject?.notify : false;
 
@@ -54,10 +73,18 @@ function updateAttributes(todoObjects: TodoObject[], sorting: Sorting[], reset: 
           incrementCount(attributes[key], value, notify);
         }
       }
-    });
-    attributes[key] = Object.fromEntries(Object.entries(attributes[key]).sort(([a], [b]) => a.localeCompare(b)));
-  });
-  attributes = Object.fromEntries(sorting.map((item) => [item.value, attributes[item.value]]));
+    }
+
+    const sortedAttributes = Object.fromEntries(
+      Object.entries(attributes[key])
+        .sort(([a], [b]) => a.localeCompare(b))
+    );
+    if (Object.keys(getDateAttributes()).includes(key)) {
+      attributes[key as DateAttributeKey] = sortedAttributes as DateAttribute;
+    } else {
+      attributes[key as NonDateAttributeKey] = sortedAttributes as NonDateAttribute;
+    }
+  }
 }
 
 export { attributes, getDateAttributes, updateAttributes };
