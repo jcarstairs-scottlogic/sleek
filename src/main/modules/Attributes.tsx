@@ -2,13 +2,22 @@ const attributes: Attributes = {
   priority: {},
   projects: {},
   contexts: {},
-  due: {},
-  t: {},
+  due: {} as DateAttribute,
+  t: {} as DateAttribute,
   rec: {},
   pm: {},
-  created: {},
-  completed: {},
+  created: {} as DateAttribute,
+  completed: {} as DateAttribute,
 };
+
+function getDateAttributes(): DateAttributes {
+  return {
+    due: attributes.due,
+    t: attributes.t,
+    created: attributes.created,
+    completed: attributes.completed,
+  };
+}
 
 function incrementCount(countObject: any, key: any | null, notify: boolean): void {
   if(key) {
@@ -51,4 +60,4 @@ function updateAttributes(todoObjects: TodoObject[], sorting: Sorting[], reset: 
   attributes = Object.fromEntries(sorting.map((item) => [item.value, attributes[item.value]]));
 }
 
-export { attributes, updateAttributes };
+export { attributes, getDateAttributes, updateAttributes };

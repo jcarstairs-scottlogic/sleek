@@ -167,24 +167,27 @@ declare global {
     exclude: boolean;
   }
 
+  type NonDateAttributeKey =
+    | 'priority'
+    | 'projects'
+    | 'contexts'
+    | 'rec'
+    | 'pm';
+
+  type DateAttributeKey = 'due' | 't' | 'created' | 'completed';
+
+  type AttributeKey = NonDateAttributeKey | DateAttributeKey;
+
   interface Attribute {
     [key: string]: number | boolean;
   }
 
-  interface Attributes {
-    [key: string]: {
-      [key: string]: Attribute;
-    }
+  type Attributes = {
+    [attributeKey in AttributeKey]:
+      attributeKey extends DateAttributeKey ? DateAttribute : NonDateAttribute;
   }
 
-  type DateAttributes = {
-    [key: string]: {
-      date: string | null;
-      string: string | null;
-      type: string | null;
-      notify: boolean;
-    };
-  };
+  type DateAttributes = Pick<Attributes, DateAttributeKey>;
 
   type DateAttribute = {
     date: string | null;
@@ -192,6 +195,8 @@ declare global {
     type: string | null;
     notify: boolean;
   };
+
+  type NonDateAttribute = { [key: string]: Attribute; };
 
   type HeadersObject = {
     availableObjects: number;
