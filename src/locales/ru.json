@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "на этой неделе",
   "drawer.attributes.thisMonth": "в этом месяце",
   "drawer.attributes.nextMonth": "следующий месяц",
+  "drawer.attributes.afterNextMonth": "после следующего месяца",
+  "drawer.attributes.beforeLastWeek": "до прошлой недели",
   "drawer.attributes.overdue": "просроченный",
   "drawer.attributes.elapsed": "прошедший",
   "drawer.sorting.fileSorting": "Сортировать задачи в порядке их появления в файле",

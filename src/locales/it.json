@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "questa settimana",
   "drawer.attributes.thisMonth": "questo mese",
   "drawer.attributes.nextMonth": "il prossimo mese",
+  "drawer.attributes.afterNextMonth": "dopo il mese prossimo",
+  "drawer.attributes.beforeLastWeek": "prima della settimana scorsa",
   "drawer.attributes.overdue": "in ritardo",
   "drawer.attributes.elapsed": "trascorso",
   "drawer.sorting.fileSorting": "Ordina i compiti come appaiono nel file",

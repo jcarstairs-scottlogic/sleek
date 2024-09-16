@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "tento týden",
   "drawer.attributes.thisMonth": "tento měsíc",
   "drawer.attributes.nextMonth": "příští měsíc",
+  "drawer.attributes.afterNextMonth": "po příštím měsíci",
+  "drawer.attributes.beforeLastWeek": "před minulým týdnem",
   "drawer.attributes.overdue": "pozadu",
   "drawer.attributes.elapsed": "uplynulý",
   "drawer.sorting.fileSorting": "Seřadit úkoly podle pořadí v souboru",

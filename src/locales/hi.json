@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "इस सप्ताह",
   "drawer.attributes.thisMonth": "इस महीने",
   "drawer.attributes.nextMonth": "अगले महीने",
+  "drawer.attributes.afterNextMonth": "अगले महीने के बाद",
+  "drawer.attributes.beforeLastWeek": "पिछले सप्ताह से पहले",
   "drawer.attributes.overdue": "अतित",
   "drawer.attributes.elapsed": "बीता हुआ",
   "drawer.sorting.fileSorting": "वे दिखाई देते हैं जैसे कि वे फ़ाइल में हैं, कार्य क्रमबद्ध करें",

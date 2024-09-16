@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "this week",
   "drawer.attributes.thisMonth": "this month",
   "drawer.attributes.nextMonth": "next month",
+  "drawer.attributes.afterNextMonth": "after next month",
+  "drawer.attributes.beforeLastWeek": "before last week",
   "drawer.attributes.overdue": "overdue",
   "drawer.attributes.elapsed": "elapsed",
   "drawer.sorting.fileSorting": "Order todos as they appear in the file",
