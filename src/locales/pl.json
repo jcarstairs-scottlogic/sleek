@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "w tym tygodniu",
   "drawer.attributes.thisMonth": "w tym miesiącu",
   "drawer.attributes.nextMonth": "następny miesiąc",
+  "drawer.attributes.afterNextMonth": "po następnym miesiącu",
+  "drawer.attributes.beforeLastWeek": "przed zeszłym tygodniem",
   "drawer.attributes.overdue": "zaległy",
   "drawer.attributes.elapsed": "upłynął",
   "drawer.sorting.fileSorting": "Sortuj zadania tak, jak występują w pliku",

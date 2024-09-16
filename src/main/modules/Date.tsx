@@ -1,5 +1,5 @@
 import Sugar from 'sugar';
-import dayjs from 'dayjs';
+import dayjs, { type Dayjs } from 'dayjs';
 import { config } from '../config';
 
 function mustNotify(date: Date): boolean {
@@ -9,7 +9,7 @@ function mustNotify(date: Date): boolean {
 }
 
 function replaceSpeakingDatesWithAbsoluteDates(string: string): string {
-  const speakingDates: DateAttributes = extractSpeakingDates(string);
+  const speakingDates = extractSpeakingDates(string);
   const due: DateAttribute = speakingDates['due:'];
   const t: DateAttribute = speakingDates['t:'];
   if(due.date) {
@@ -50,15 +50,20 @@ function processDateWithSugar(string: string, type: string): DateAttribute | nul
   return lastMatch;
 }
 
-function extractSpeakingDates(body: string): DateAttributes {
-  const expressions = [
+type SpeakingDates = {
+  'due:': DateAttributes['due'];
+  't:': DateAttributes['t'];
+};
+
+function extractSpeakingDates(body: string): SpeakingDates {
+  const expressions: { pattern: RegExp, key: 'due:'|'t:', type: string }[] = [
     { pattern: /due:(?!(\d{4}-\d{2}-\d{2}))(.*?)(?=t:|$)/g, key: 'due:', type: 'relative' },
     { pattern: /due:(\d{4}-\d{2}-\d{2})/g, key: 'due:', type: 'absolute' },
     { pattern: /t:(?!(\d{4}-\d{2}-\d{2}))(.*?)(?=due:|$)/g, key: 't:', type: 'relative' },
     { pattern: /t:(\d{4}-\d{2}-\d{2})/g, key: 't:', type: 'absolute' },
   ];
 
-  const speakingDates: DateAttributes = {
+  const speakingDates: SpeakingDates = {
     'due:': {
       date: null,
       string: null,
@@ -86,4 +91,55 @@ function extractSpeakingDates(body: string): DateAttributes {
   return speakingDates;
 }
 
-export { extractSpeakingDates, replaceSpeakingDatesWithAbsoluteDates };
+function getFriendlyDateGroup(dateTime: Dayjs): FriendlyDateGroup | null {
+  if (!dayjs.isDayjs(dateTime) || !dateTime.isValid()) {
+    return null;
+  }
+
+  const today = dayjs().startOf('day');
+  const date = dateTime.startOf('day');
+
+  if (date.isBefore(today.subtract(1, 'week'))) {
+    return 'before-last-week';
+  }
+
+  if (date.isBefore(today.subtract(1, 'day'))) {
+    return 'last-week';
+  }
+
+  if (date.isBefore(today)) {
+    return 'yesterday';
+  }
+
+  if (date.isSame(today)) {
+    return 'today';
+  }
+
+  if (date.isSame(today.add(1, 'day'))) {
+    return 'tomorrow';
+  }
+
+  if (today.add(1, 'week').isAfter(date)) {
+    return 'this-week';
+  }
+
+  if (today.add(2, 'week').isAfter(date)) {
+    return 'next-week';
+  }
+
+  if (today.add(1, 'month').isAfter(date)) {
+    return 'this-month';
+  }
+
+  if (today.add(2, 'month').isAfter(date)) {
+    return 'next-month';
+  }
+
+  return 'after-next-month';
+}
+
+export {
+  extractSpeakingDates,
+  getFriendlyDateGroup,
+  replaceSpeakingDatesWithAbsoluteDates
+};

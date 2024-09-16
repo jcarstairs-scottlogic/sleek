@@ -137,6 +137,7 @@ const Row: React.FC<Props> = memo(({
           filters={filters}
           settings={settings}
           handleButtonClick={handleButtonClick}
+          t={t}
         />
 
       </ListItem>

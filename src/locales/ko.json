@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "이번 주",
   "drawer.attributes.thisMonth": "이번 달",
   "drawer.attributes.nextMonth": "다음 달",
+  "drawer.attributes.afterNextMonth": "다음 달 이후",
+  "drawer.attributes.beforeLastWeek": "지난 주 전에",
   "drawer.attributes.overdue": "연체",
   "drawer.attributes.elapsed": "경과",
   "drawer.sorting.fileSorting": "파일에 나타나는 대로 작업 정렬",

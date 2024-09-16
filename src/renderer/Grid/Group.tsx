@@ -5,25 +5,30 @@ import Divider from '@mui/material/Divider';
 import dayjs from 'dayjs';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import { friendlyDate } from 'renderer/Shared';
-import { i18n } from 'renderer/Settings/LanguageSelector';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import type { i18n } from 'renderer/Settings/LanguageSelector';
+import { type WithTranslation, withTranslation } from 'react-i18next';
 dayjs.extend(updateLocale);
 
 interface FormatGroupElementProps {
-  groupElement: string;
+  groupElement: string | TodoObjectDateProperty;
   settings: Settings;
   t: typeof i18n.t;
   todotxtAttribute: string;
 }
 
-function formatGroupElement({ groupElement, settings, t, todotxtAttribute }: FormatGroupElementProps) {
-  // If group element is a date, then format according to user preferences
-  if (
-    ['due', 't'].includes(todotxtAttribute)
-      && dayjs(groupElement).isValid()
-      && settings.useHumanFriendlyDates
-  ) {
-    return friendlyDate(groupElement, todotxtAttribute, settings, t).pop();
+function formatGroupElement({ groupElement, settings, t, todotxtAttribute }: FormatGroupElementProps): string {
+  // If group element is a date property, then format according to user preferences
+  if (typeof groupElement === 'object') {
+    if (settings.useHumanFriendlyDates) {
+      const humanFriendlyDate = friendlyDate(
+        groupElement.friendlyDateGroup,
+        todotxtAttribute,
+        settings,
+        t
+      ).pop();
+      return humanFriendlyDate || groupElement.isoString;
+    }
+    return groupElement.isoString;
   }
 
   // No transformation required: display as-is
@@ -32,7 +37,7 @@ function formatGroupElement({ groupElement, settings, t, todotxtAttribute }: For
 
 interface GroupProps extends WithTranslation {
   settings: Settings;
-  title: string | string[];
+  title: string | string[] | TodoObjectDateProperty | TodoObjectDateProperty[];
   todotxtAttribute: string;
   filters: Filters | null;
   onClick: Function;
@@ -40,11 +45,13 @@ interface GroupProps extends WithTranslation {
 }
 
 const Group: React.FC<GroupProps> = memo(({ settings, t, title, todotxtAttribute, filters, onClick }) => {
-  if (!title || title.length === 0) {
+  if (!title || (Array.isArray(title) && title.length === 0)) {
     return <ListItem className="row group"><Divider /></ListItem>;
   }
   
-  const groupElements = (typeof title === 'string') ? [title] : title
+  const groupElements = Array.isArray(title)
+    ? title
+    : ([title] as string[] | TodoObjectDateProperty[]);
   const formattedGroupElements = groupElements.map(
     (groupElement) => formatGroupElement({ groupElement, settings, t, todotxtAttribute })
   );

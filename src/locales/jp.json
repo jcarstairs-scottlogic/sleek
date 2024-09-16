@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "今週",
   "drawer.attributes.thisMonth": "今月",
   "drawer.attributes.nextMonth": "来月",
+  "drawer.attributes.afterNextMonth": "来月以降",
+  "drawer.attributes.beforeLastWeek": "先週より前",
   "drawer.attributes.overdue": "期限切れ",
   "drawer.attributes.elapsed": "経過",
   "drawer.sorting.fileSorting": "ファイルに表示される順にタスクを並べ替え",

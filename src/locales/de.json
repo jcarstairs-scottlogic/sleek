@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "diese Woche",
   "drawer.attributes.thisMonth": "diesen Monat",
   "drawer.attributes.nextMonth": "nächster Monat",
+  "drawer.attributes.afterNextMonth": "nach nächster Monat",
+  "drawer.attributes.beforeLastWeek": "vor letzte Woche",
   "drawer.attributes.overdue": "überfällig",
   "drawer.attributes.elapsed": "verstrichen",
   "drawer.sorting.fileSorting": "Aufgaben in der Reihenfolge der Datei anordnen",

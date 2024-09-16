@@ -47,6 +47,8 @@
   "drawer.attributes.thisWeek": "bu hafta",
   "drawer.attributes.thisMonth": "bu ay",
   "drawer.attributes.nextMonth": "gelecek ay",
+  "drawer.attributes.afterNextMonth": "gelecek aydan sonra",
+  "drawer.attributes.beforeLastWeek": "geçen haftadan önce",
   "drawer.attributes.overdue": "gecikmiş",
   "drawer.attributes.elapsed": "geçmiş",
   "drawer.sorting.fileSorting": "Görevleri dosyada göründükleri sıraya göre sırala",

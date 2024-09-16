@@ -18,7 +18,7 @@ declare global {
       };
     };
   }
-  
+
   interface ContextMenu {
     event: MouseEvent;
     items: ContextMenuItem[];
@@ -39,13 +39,13 @@ declare global {
   }
 
   interface PromptItem {
-    id: string,
-    headline?: string,
-    text?: string,
-    button1?: string,
-    onButton1?: Function,
-    button2?: string,
-    onButton2?: Function,
+    id: string;
+    headline?: string;
+    text?: string;
+    button1?: string;
+    onButton1?: Function;
+    button2?: string;
+    onButton2?: Function;
   }
 
   interface Settings {
@@ -87,7 +87,7 @@ declare global {
     fileWatcherAtomic: boolean;
     fileWatcherPolling: boolean;
     fileWatcherPollingInterval: boolean;
-    __internal__: { migrations: { version: string }};
+    __internal__: { migrations: { version: string } };
   }
 
   interface FileObject {
@@ -99,18 +99,23 @@ declare global {
     doneFileBookmark: string | null;
   }
 
+  interface TodoObjectDateProperty {
+    isoString: string;
+    friendlyDateGroup: FriendlyDateGroup | null;
+  }
+
   interface TodoObject {
     lineNumber: number;
     body: string | null;
-    created: string | null;
+    created: TodoObjectDateProperty | null;
     complete: boolean;
-    completed: string | null;
+    completed: TodoObjectDateProperty | null;
     priority: string | null;
     contexts: string[] | null;
     projects: string[] | null;
-    due: string | null;
+    due: TodoObjectDateProperty | null;
     dueString: string | null;
-    t: string | null;
+    t: TodoObjectDateProperty | null;
     tString: string | null;
     rec: string | null;
     hidden: boolean;
@@ -123,7 +128,6 @@ declare global {
   interface TodoGroup {
     title: string;
     todoObjects: TodoObject[];
-    row: number;
     visible: boolean;
   }
 
@@ -168,24 +172,27 @@ declare global {
     exclude: boolean;
   }
 
+  type NonDateAttributeKey =
+    | 'priority'
+    | 'projects'
+    | 'contexts'
+    | 'rec'
+    | 'pm';
+
+  type DateAttributeKey = 'due' | 't' | 'created' | 'completed';
+
+  type AttributeKey = NonDateAttributeKey | DateAttributeKey;
+
   interface Attribute {
     [key: string]: number | boolean;
   }
 
-  interface Attributes {
-    [key: string]: {
-      [key: string]: Attribute;
-    }
+  type Attributes = {
+    [attributeKey in AttributeKey]:
+      attributeKey extends DateAttributeKey ? DateAttribute : NonDateAttribute;
   }
 
-  type DateAttributes = {
-    [key: string]: {
-      date: string | null;
-      string: string | null;
-      type: string | null;
-      notify: boolean;
-    };
-  };
+  type DateAttributes = Pick<Attributes, DateAttributeKey>;
 
   type DateAttribute = {
     date: string | null;
@@ -193,6 +200,8 @@ declare global {
     type: string | null;
     notify: boolean;
   };
+
+  type NonDateAttribute = { [key: string]: Attribute; };
 
   type HeadersObject = {
     availableObjects: number;
@@ -205,17 +214,17 @@ declare global {
   };
 
   interface RequestedData {
-    todoData: TodoData,
-    attributes: Attributes,
-    headers: HeadersObject,
-    filters: Filters,
+    todoData: TodoData;
+    attributes: Attributes;
+    headers: HeadersObject;
+    filters: Filters;
   }
 
   interface SearchFilter {
-    title?: string,
-    label?: string,
-    inputValue?: string,
-    suppress?: boolean,
+    title?: string;
+    label?: string;
+    inputValue?: string;
+    suppress?: boolean;
   }
 
   type VisibleSetting = {
@@ -229,6 +238,18 @@ declare global {
   };
 
   type VisibleSettings = Record<string, VisibleSetting>;
+
+  type FriendlyDateGroup =
+    | 'before-last-week'
+    | 'last-week'
+    | 'yesterday'
+    | 'today'
+    | 'tomorrow'
+    | 'this-week'
+    | 'next-week'
+    | 'this-month'
+    | 'next-month'
+    | 'after-next-month';
 }
 
 export {};
